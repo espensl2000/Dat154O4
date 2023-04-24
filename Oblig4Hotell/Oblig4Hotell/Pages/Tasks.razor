@@ -1,0 +1,71 @@
+﻿@page "/tasks"
+
+<div id="tasks-wrapper">
+	<div id="tasks-content">
+		
+		<h3>@role</h3>
+
+		<div id="tasks-sheet">
+			<div class="task-column">
+				<div class="task">
+					<p>@task</p>
+				</div>
+			</div
+			<div class="task-column">
+
+			</div>
+			<div class="task-column">
+
+			</div>
+
+		</div>
+
+	</div>
+</div>
+
+@code {
+	@inject NavigationManager NavigationManager;
+	private string taskId;
+	private string role = "no such role found";
+	private string task;
+
+	protected override void OnInitialized()
+	{
+		var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+		taskId = System.Web.HttpUtility.ParseQueryString(uri.Query).Get("role");
+
+		switch (taskId)
+		{
+			case "maintenance":
+				role = "Maintenance tasks";
+				break;
+			case "service":
+				role = "Service tasks";
+				break;
+			case "cleaning":
+				role = "Cleaning tasks";
+				break;
+		}
+
+
+		Task t = new Task();
+		t.TaskId = 1;
+		t.TaskDesc = "Clean";
+
+		task = t.Stringg();
+
+	}
+
+	class Task
+	{
+		public int TaskId { get; set; }
+		public String TaskDesc { get; set; }
+		public String Stringg()
+		{
+			return(TaskId + " - " + TaskDesc);
+		}
+	}
+
+
+
+}
